@@ -7,12 +7,20 @@
 //
 
 #import "CloudAppPlugin.h"
+#import "CloudAppCredentialsViewController.h"
+#import "CloudAppPresetViewController.h"
 
 @implementation CloudAppPlugin
 
+- (RMUploadPresetConfigurationViewController *)credentialsConfigurationViewControllerForCredentials:(RMUploadCredentials *)credentials {
+	CloudAppCredentialsViewController *viewController = [[CloudAppCredentialsViewController alloc] init];
+	return viewController;
+}
+
+
 - (RMUploadPresetConfigurationViewController *)presetConfigurationViewControllerForPreset:(RMUploadPreset *)preset {
-	NSViewController *controller = [[NSViewController alloc] initWithNibName:@"PresetConfig" bundle:[NSBundle bundleWithIdentifier:CloudAppBundleIdentifier]];
-	return (RMUploadPresetConfigurationViewController *)controller;
+	CloudAppPresetViewController *controller = [[CloudAppPresetViewController alloc] init];
+	return controller;
 }
 
 @end
