@@ -6,10 +6,4 @@
 //  Copyright Sam Soffes 2010. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
-
-#import "RMUploadKit/RMUploadKit.h"
-
-@interface CloudAppPlugin : RMUploadPlugin
-
-@end
+extern NSString *const CloudAppBundleIdentifier;

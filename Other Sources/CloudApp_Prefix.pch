@@ -1,0 +1,13 @@
+//
+//  CloudApp_Prefix.pch
+//  CloudApp
+//
+//  Created by Sam Soffes on 8/29/10.
+//  Copyright Sam Soffes 2010. All rights reserved.
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+	#import "RMUploadKit/RMUploadKit.h"
+	#import "CloudAppConstants.h"
+#endif

@@ -7,9 +7,7 @@
 //
 
 #import "CloudAppPreset.h"
-
 #import "CloudAppUploadTask.h"
-#import "CloudAppConstants.h"
 
 @implementation CloudAppPreset
 
@@ -17,18 +15,18 @@
 	return @"CloudApp";
 }
 
+
 + (Class)uploadTaskClass {
 	return [CloudAppUploadTask class];
 }
 
-/*
-+ (Class)credentialsClass {
-	return [CloudAppCredentials class];
-}
-*/
 
-- (id)initWithPropertyListRepresentation:(id)values
-{	
+//+ (Class)credentialsClass {
+//	return [CloudAppCredentials class];
+//}
+
+
+- (id)initWithPropertyListRepresentation:(id)values {
 	id superRepresentation = [values objectForKey:@"super"];
 	self = [super initWithPropertyListRepresentation:superRepresentation];
 	if (self == nil) return nil;
@@ -38,8 +36,8 @@
 	return self;
 }
 
-- (id)propertyListRepresentation
-{
+
+- (id)propertyListRepresentation {
 	id superRepresentation = [super propertyListRepresentation];
 	
 	NSMutableDictionary *plist = [NSMutableDictionary dictionary];

@@ -6,6 +6,6 @@
 //  Copyright Sam Soffes 2010. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+@interface CloudAppPlugin : RMUploadPlugin
 
-NSString *const CloudAppBundleIdentifier = @"com.Sam Soffes.uploader.CloudApp";
+@end
