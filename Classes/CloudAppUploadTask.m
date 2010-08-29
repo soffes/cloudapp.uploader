@@ -124,27 +124,30 @@
 		_s3Request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:[s3Info objectForKey:@"url"]]];
 		_s3Request.delegate = self;
 		_s3Request.uploadProgressDelegate = self;
-		_s3Request.shouldUseRFC2616RedirectBehaviour = YES;
+		_s3Request.shouldRedirect = YES;
 		for (NSString *param in params) {
 			[_s3Request setPostValue:[params objectForKey:param] forKey:param];
 		}
 		NSString *filePath = [(NSURL *)[_uploadInfo valueForKey:RMUploadFileURLKey] path];
 		[_s3Request addFile:filePath forKey:@"file"];
+		[_s3Request addRequestHeader:@"Accept" value:@"application/json"];
 		
 		[_s3Request startAsynchronous];
 	}
 	
 	// Upload to S3 finished
 	else {
-		// Clean up
-		[self _cancelRequest:_s3Request];
-		_s3Request = nil;
-		
-		NSLog(@"[CloudApp.uploader] Complete: %@", [_s3Request responseHeaders]);
+		NSLog(@"[CloudApp.uploader] Complete: %@", [_s3Request responseString]);
 		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 								  [NSURL URLWithString:@"http://google.com"], RMUploadTaskResourceLocationKey,
 								  nil];
 		[[NSNotificationCenter defaultCenter] postNotificationName:RMUploadTaskDidFinishTransactionNotificationName object:self userInfo:userInfo];
+		
+		// Clean up
+		[self _cancelRequest:_s3Request];
+		_s3Request = nil;
+		
+		// Finish
 		[[NSNotificationCenter defaultCenter] postNotificationName:RMUploadTaskDidCompleteNotificationName object:self];
 	}
 }
