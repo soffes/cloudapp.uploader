@@ -6,4 +6,4 @@
 //  Copyright Sam Soffes 2010. All rights reserved.
 //
 
-NSString *const CloudAppBundleIdentifier = @"com.samsoffes.uploader.CloudApp";
+NSString *const CloudAppBundleIdentifier = @"com.samsoffes.uploader.cloudapp";
