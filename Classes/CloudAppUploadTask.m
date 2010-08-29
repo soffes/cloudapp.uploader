@@ -137,9 +137,12 @@
 	
 	// Upload to S3 finished
 	else {
-		NSLog(@"[CloudApp.uploader] Complete: %@", [_s3Request responseString]);
+		NSDictionary *fileInfo = [[_s3Request responseString] JSONValue];
+		NSURL *fileURL = [NSURL URLWithString:[fileInfo objectForKey:@"url"]];
+		
+		NSLog(@"[CloudApp.uploader] Complete: %@", fileURL);
 		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-								  [NSURL URLWithString:@"http://google.com"], RMUploadTaskResourceLocationKey,
+								  fileURL, RMUploadTaskResourceLocationKey,
 								  nil];
 		[[NSNotificationCenter defaultCenter] postNotificationName:RMUploadTaskDidFinishTransactionNotificationName object:self userInfo:userInfo];
 		
