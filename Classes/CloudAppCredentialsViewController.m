@@ -16,13 +16,11 @@
 - (void)_failWithError:(NSError *)error;
 @end
 
-@interface CloudAppCredentialsViewController (RequestDelegate) <ASIHTTPRequestDelegate>
-@end
 
 @implementation CloudAppCredentialsViewController
 
 @dynamic representedObject;
-@synthesize loginUsernameField;
+@synthesize loginEmailField;
 @synthesize loginPasswordField;
 @synthesize authenticating = _authenticating;
 
@@ -58,13 +56,12 @@
 		
 		return NO;
 	};
-	if (!validateTextField([self loginUsernameField])) return;
+	if (!validateTextField([self loginEmailField])) return;
 	if (!validateTextField([self loginPasswordField])) return;
 	
 	[self _cancelRequest];
-	_request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:@"http://my.cl.ly/items"]];
+	_request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:@"http://my.cl.ly/items?per_page=1"]];
 	[_request addRequestHeader:@"Accept" value:@"application/json"];
-	[_request addBasicAuthenticationHeaderWithUsername:[[self loginUsernameField] stringValue] andPassword:[[self loginPasswordField] stringValue]];
 	_request.delegate = self;
 	[_request startAsynchronous];
 	
@@ -87,18 +84,28 @@
 	NSDictionary *notificationInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 									  error, RMUploadPresetConfigurationViewControllerDidCompleteErrorKey,
 									  nil];
+	[self setAuthenticating:NO];
 	[[NSNotificationCenter defaultCenter] postNotificationName:RMUploadPresetConfigurationViewControllerDidCompleteNotificationName object:self userInfo:notificationInfo];
 }
 
-@end
+
+#pragma mark ASIHTTPRequestDelegate
+
+- (void)authenticationNeededForRequest:(ASIHTTPRequest *)request {
+	if ([request authenticationRetryCount] == 0) {
+		[request applyCredentials:[NSDictionary dictionaryWithObjectsAndKeys:[[[self loginEmailField] stringValue] lowercaseString], kCFHTTPAuthenticationUsername, [[self loginPasswordField] stringValue], kCFHTTPAuthenticationPassword, nil]];
+		[request retryUsingSuppliedCredentials];
+	} else {
+		[request cancelAuthentication];
+	}
+}
 
 
-@implementation CloudAppCredentialsViewController (RequestDelegate)
-
-- (void)requestReceivedResponseHeaders:(ASIHTTPRequest *)request {
+- (void)requestFinished:(ASIHTTPRequest *)request {
 	if ([request responseStatusCode] != 200) {
+		
 		NSDictionary *errorInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-								   @"Invalid username and password", NSLocalizedDescriptionKey,
+								   @"Invalid email and password", NSLocalizedDescriptionKey,
 								   nil];
 		NSError *error = [NSError errorWithDomain:CloudAppBundleIdentifier code:0 userInfo:errorInfo];
 		
@@ -106,9 +113,13 @@
 		return;
 	}
 	
-	[self.representedObject setUsername:[[self loginUsernameField] stringValue]];
-	[self.representedObject setDigest:@"ASDF"];
+	NSString *email = [[[self loginEmailField] stringValue] lowercaseString];
+	NSString *digest = [ASIHTTPRequest base64forData:[[NSString stringWithFormat:@"%@:%@", email, [[self loginPasswordField] stringValue]] dataUsingEncoding:NSUTF8StringEncoding]];
 	
+	[self.representedObject setEmail:email];
+	[self.representedObject setDigest:digest];
+	
+	[self setAuthenticating:NO];
 	[[NSNotificationCenter defaultCenter] postNotificationName:RMUploadPresetConfigurationViewControllerDidCompleteNotificationName object:self];
 	[self _cancelRequest];
 }

@@ -27,7 +27,7 @@
 	<key>RMUploadPluginBundleMinimumFrameworkBundleVersion</key>
 	<string>1</string>
 	<key>RMUploadPluginServiceHost</key>
-	<string>cl.ly</string>
+	<string>f.cl.ly</string>
 	<key>RMUploadPluginServiceUseSSL</key>
 	<string>NO</string>
 </dict>

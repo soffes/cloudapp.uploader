@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		3020A8E510A2EB600092F3FC /* RMUploadKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3020A8E410A2EB600092F3FC /* RMUploadKit.framework */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
+		B2CCDA58122AE77300D42CE0 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CCDA4F122AE77300D42CE0 /* NSObject+SBJSON.m */; };
+		B2CCDA59122AE77300D42CE0 /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CCDA51122AE77300D42CE0 /* NSString+SBJSON.m */; };
+		B2CCDA5A122AE77300D42CE0 /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CCDA53122AE77300D42CE0 /* SBJsonBase.m */; };
+		B2CCDA5B122AE77300D42CE0 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CCDA55122AE77300D42CE0 /* SBJsonParser.m */; };
+		B2CCDA5C122AE77300D42CE0 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CCDA57122AE77300D42CE0 /* SBJsonWriter.m */; };
 		B2E460C5122AA91A00A915F8 /* CloudAppCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E460BB122AA91A00A915F8 /* CloudAppCredentials.m */; };
 		B2E460C6122AA91A00A915F8 /* CloudAppCredentialsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E460BD122AA91A00A915F8 /* CloudAppCredentialsViewController.m */; };
 		B2E460C7122AA91A00A915F8 /* CloudAppPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E460BF122AA91A00A915F8 /* CloudAppPlugin.m */; };
@@ -35,6 +40,17 @@
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		3020A8E410A2EB600092F3FC /* RMUploadKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RMUploadKit.framework; path = Frameworks/RMUploadKit.framework; sourceTree = "<group>"; };
 		8D5B49B6048680CD000E48DA /* CloudApp.uploader */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CloudApp.uploader; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2CCDA4D122AE77300D42CE0 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
+		B2CCDA4E122AE77300D42CE0 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
+		B2CCDA4F122AE77300D42CE0 /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
+		B2CCDA50122AE77300D42CE0 /* NSString+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SBJSON.h"; sourceTree = "<group>"; };
+		B2CCDA51122AE77300D42CE0 /* NSString+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SBJSON.m"; sourceTree = "<group>"; };
+		B2CCDA52122AE77300D42CE0 /* SBJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonBase.h; sourceTree = "<group>"; };
+		B2CCDA53122AE77300D42CE0 /* SBJsonBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonBase.m; sourceTree = "<group>"; };
+		B2CCDA54122AE77300D42CE0 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
+		B2CCDA55122AE77300D42CE0 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
+		B2CCDA56122AE77300D42CE0 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
+		B2CCDA57122AE77300D42CE0 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		B2E460BA122AA91A00A915F8 /* CloudAppCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudAppCredentials.h; sourceTree = "<group>"; };
 		B2E460BB122AA91A00A915F8 /* CloudAppCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudAppCredentials.m; sourceTree = "<group>"; };
 		B2E460BC122AA91A00A915F8 /* CloudAppCredentialsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudAppCredentialsViewController.h; sourceTree = "<group>"; };
@@ -139,6 +155,24 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		B2CCDA4C122AE77300D42CE0 /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				B2CCDA4D122AE77300D42CE0 /* JSON.h */,
+				B2CCDA4E122AE77300D42CE0 /* NSObject+SBJSON.h */,
+				B2CCDA4F122AE77300D42CE0 /* NSObject+SBJSON.m */,
+				B2CCDA50122AE77300D42CE0 /* NSString+SBJSON.h */,
+				B2CCDA51122AE77300D42CE0 /* NSString+SBJSON.m */,
+				B2CCDA52122AE77300D42CE0 /* SBJsonBase.h */,
+				B2CCDA53122AE77300D42CE0 /* SBJsonBase.m */,
+				B2CCDA54122AE77300D42CE0 /* SBJsonParser.h */,
+				B2CCDA55122AE77300D42CE0 /* SBJsonParser.m */,
+				B2CCDA56122AE77300D42CE0 /* SBJsonWriter.h */,
+				B2CCDA57122AE77300D42CE0 /* SBJsonWriter.m */,
+			);
+			path = JSON;
+			sourceTree = "<group>";
+		};
 		B2E46135122AB4AC00A915F8 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -182,6 +216,7 @@
 		B2E46189122AB8BA00A915F8 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				B2CCDA4C122AE77300D42CE0 /* JSON */,
 				B2E4618A122AB8BA00A915F8 /* ASIHTTPRequest */,
 			);
 			path = Vendor;
@@ -322,6 +357,11 @@
 				B2E46255122AB8BA00A915F8 /* ASIHTTPRequest.m in Sources */,
 				B2E46256122AB8BA00A915F8 /* ASIInputStream.m in Sources */,
 				B2E46257122AB8BA00A915F8 /* ASINetworkQueue.m in Sources */,
+				B2CCDA58122AE77300D42CE0 /* NSObject+SBJSON.m in Sources */,
+				B2CCDA59122AE77300D42CE0 /* NSString+SBJSON.m in Sources */,
+				B2CCDA5A122AE77300D42CE0 /* SBJsonBase.m in Sources */,
+				B2CCDA5B122AE77300D42CE0 /* SBJsonParser.m in Sources */,
+				B2CCDA5C122AE77300D42CE0 /* SBJsonWriter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

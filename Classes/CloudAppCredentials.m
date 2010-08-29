@@ -8,17 +8,17 @@
 
 #import "CloudAppCredentials.h"
 
-NSString *const CloudAppCredentialsUsernameKey = @"username";
+NSString *const CloudAppCredentialsEmailKey = @"email";
 NSString *const CloudAppCredentialsDigestKey = @"digest";
 
 @implementation CloudAppCredentials
 
-@synthesize username;
+@synthesize email;
 @synthesize digest;
 
 + (NSSet *)_propertyKeys {
 	return [NSSet setWithObjects:
-			CloudAppCredentialsUsernameKey,
+			CloudAppCredentialsEmailKey,
 			CloudAppCredentialsDigestKey,
 			nil];
 }
@@ -29,13 +29,13 @@ NSString *const CloudAppCredentialsDigestKey = @"digest";
 	
 	if ([key isEqualToString:RMUploadCredentialsDirtyKey]) {
 		[keyPaths unionSet:[NSSet setWithObjects:
-							CloudAppCredentialsUsernameKey,
+							CloudAppCredentialsEmailKey,
 							CloudAppCredentialsDigestKey,
 							nil]];
 	}
 	
 	if ([key isEqualToString:RMUploadCredentialsUserIdentifierKey]) {
-		[keyPaths addObject:CloudAppCredentialsUsernameKey];
+		[keyPaths addObject:CloudAppCredentialsEmailKey];
 	}
 	
 	return keyPaths;
@@ -44,8 +44,8 @@ NSString *const CloudAppCredentialsDigestKey = @"digest";
 
 - (id)initWithPropertyListRepresentation:(id)values {
 	if ((self = [super initWithPropertyListRepresentation:[values objectForKey:@"super"]])) {
-		if ([values valueForKey:CloudAppCredentialsUsernameKey] != nil) {
-			self.username = [values valueForKey:CloudAppCredentialsUsernameKey];
+		if ([values valueForKey:CloudAppCredentialsEmailKey] != nil) {
+			self.email = [values valueForKey:CloudAppCredentialsEmailKey];
 		}
 	
 		if ([values valueForKey:CloudAppCredentialsDigestKey] != nil) {
@@ -60,8 +60,8 @@ NSString *const CloudAppCredentialsDigestKey = @"digest";
 	NSMutableDictionary *plist = [NSMutableDictionary dictionary];
 	[plist setObject:[super propertyListRepresentation] forKey:@"super"];
 	
-	if (self.username != nil) {
-		[plist setObject:self.username forKey:CloudAppCredentialsUsernameKey];
+	if (self.email != nil) {
+		[plist setObject:self.email forKey:CloudAppCredentialsEmailKey];
 	}
 	
 	if (self.digest != nil) {
@@ -73,7 +73,7 @@ NSString *const CloudAppCredentialsDigestKey = @"digest";
 
 
 - (NSString *)userIdentifier {
-	return self.username;
+	return self.email;
 }
 
 @end

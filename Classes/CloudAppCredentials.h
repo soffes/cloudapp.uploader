@@ -8,7 +8,7 @@
 
 @interface CloudAppCredentials : RMUploadCredentials
 
-@property (copy) NSString *username;
+@property (copy) NSString *email;
 @property (copy) NSString *digest;
 
 @end
