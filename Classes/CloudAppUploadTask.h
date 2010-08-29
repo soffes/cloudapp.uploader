@@ -7,11 +7,12 @@
 //
 
 #import "ASIHTTPRequestDelegate.h"
+#import "ASIProgressDelegate.h"
 
 @class ASIHTTPRequest;
 @class ASIFormDataRequest;
 
-@interface CloudAppUploadTask : RMUploadTask <ASIHTTPRequestDelegate> {
+@interface CloudAppUploadTask : RMUploadTask <ASIHTTPRequestDelegate, ASIProgressDelegate> {
 	
 	RMUploadPreset *_destination;
 	id _uploadInfo;

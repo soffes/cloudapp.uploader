@@ -9,17 +9,17 @@
 #import "CloudAppCredentials.h"
 
 NSString *const CloudAppCredentialsEmailKey = @"email";
-NSString *const CloudAppCredentialsDigestKey = @"digest";
+NSString *const CloudAppCredentialsPasswordKey = @"password";
 
 @implementation CloudAppCredentials
 
 @synthesize email;
-@synthesize digest;
+@synthesize password;
 
 + (NSSet *)_propertyKeys {
 	return [NSSet setWithObjects:
 			CloudAppCredentialsEmailKey,
-			CloudAppCredentialsDigestKey,
+			CloudAppCredentialsPasswordKey,
 			nil];
 }
 
@@ -30,7 +30,7 @@ NSString *const CloudAppCredentialsDigestKey = @"digest";
 	if ([key isEqualToString:RMUploadCredentialsDirtyKey]) {
 		[keyPaths unionSet:[NSSet setWithObjects:
 							CloudAppCredentialsEmailKey,
-							CloudAppCredentialsDigestKey,
+							CloudAppCredentialsPasswordKey,
 							nil]];
 	}
 	
@@ -48,8 +48,8 @@ NSString *const CloudAppCredentialsDigestKey = @"digest";
 			self.email = [values valueForKey:CloudAppCredentialsEmailKey];
 		}
 	
-		if ([values valueForKey:CloudAppCredentialsDigestKey] != nil) {
-			self.digest = [values valueForKey:CloudAppCredentialsDigestKey];
+		if ([values valueForKey:CloudAppCredentialsPasswordKey] != nil) {
+			self.password = [values valueForKey:CloudAppCredentialsPasswordKey];
 		}
 	}	
 	return self;
@@ -64,8 +64,8 @@ NSString *const CloudAppCredentialsDigestKey = @"digest";
 		[plist setObject:self.email forKey:CloudAppCredentialsEmailKey];
 	}
 	
-	if (self.digest != nil) {
-		[plist setObject:self.digest forKey:CloudAppCredentialsDigestKey];
+	if (self.password != nil) {
+		[plist setObject:self.password forKey:CloudAppCredentialsPasswordKey];
 	}
 	
 	return plist;

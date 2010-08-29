@@ -27,9 +27,7 @@
 #pragma mark NSObject
 
 - (id)init {
-	if ((self = [super initWithNibName:@"CredentialsView" bundle:[NSBundle bundleWithIdentifier:CloudAppBundleIdentifier]])) {
-		
-	}
+	self = [super initWithNibName:@"CredentialsView" bundle:[NSBundle bundleWithIdentifier:CloudAppBundleIdentifier]];
 	return self;
 }
 
@@ -61,8 +59,8 @@
 	
 	[self _cancelRequest];
 	_request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:@"http://my.cl.ly/items?per_page=1"]];
-	[_request addRequestHeader:@"Accept" value:@"application/json"];
 	_request.delegate = self;
+	[_request addRequestHeader:@"Accept" value:@"application/json"];
 	[_request startAsynchronous];
 	
 	[self setAuthenticating:YES];
@@ -114,10 +112,10 @@
 	}
 	
 	NSString *email = [[[self loginEmailField] stringValue] lowercaseString];
-	NSString *digest = [ASIHTTPRequest base64forData:[[NSString stringWithFormat:@"%@:%@", email, [[self loginPasswordField] stringValue]] dataUsingEncoding:NSUTF8StringEncoding]];
+	NSString *password = [[self loginPasswordField] stringValue];
 	
 	[self.representedObject setEmail:email];
-	[self.representedObject setDigest:digest];
+	[self.representedObject setPassword:password];
 	
 	[self setAuthenticating:NO];
 	[[NSNotificationCenter defaultCenter] postNotificationName:RMUploadPresetConfigurationViewControllerDidCompleteNotificationName object:self];

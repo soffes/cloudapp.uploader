@@ -216,8 +216,8 @@
 		B2E46189122AB8BA00A915F8 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				B2CCDA4C122AE77300D42CE0 /* JSON */,
 				B2E4618A122AB8BA00A915F8 /* ASIHTTPRequest */,
+				B2CCDA4C122AE77300D42CE0 /* JSON */,
 			);
 			path = Vendor;
 			sourceTree = "<group>";

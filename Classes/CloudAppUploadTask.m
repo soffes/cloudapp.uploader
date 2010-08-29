@@ -14,7 +14,6 @@
 @interface CloudAppUploadTask (PrivateMethods)
 - (void)_cancelRequest:(ASIHTTPRequest *)aRequest;
 - (void)_failWithError:(NSError *)error;
-- (void)_postCompletionNotification;
 @end
 
 
@@ -23,8 +22,9 @@
 #pragma mark NSObject
 
 - (void)dealloc {
-	[self _cancelRequest:_cloudRequest];
-	[self _cancelRequest:_s3Request];
+	// TODO: uncomment these once we're sure we aren't causing bad access
+//	[self _cancelRequest:_cloudRequest];
+//	[self _cancelRequest:_s3Request];
 	[_destination release];
 	[_uploadInfo release];
 	[super dealloc];
@@ -43,13 +43,12 @@
 
 
 - (void)upload {
-	NSString *digest = [(CloudAppCredentials *)[_destination authentication] digest];
+	NSLog(@"[CloudApp.uploader] Start upload");
 	
 	[self _cancelRequest:_cloudRequest];
 
 	_cloudRequest = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:@"http://my.cl.ly/items/new"]];
 	_cloudRequest.delegate = self;
-	[_cloudRequest addRequestHeader:@"Authentication" value:[NSString stringWithFormat:@"Basic %@", digest]];\
 	[_cloudRequest addRequestHeader:@"Accept" value:@"application/json"];
 	[_cloudRequest startAsynchronous];
 }
@@ -64,7 +63,8 @@
 	[self _cancelRequest:_s3Request];
 	_s3Request = nil;
 	
-	[self _postCompletionNotification];
+	// TODO: Show canceled
+	[[NSNotificationCenter defaultCenter] postNotificationName:RMUploadTaskDidCompleteNotificationName object:self];
 }
 
 
@@ -72,6 +72,7 @@
 
 - (void)_cancelRequest:(ASIHTTPRequest *)aRequest {
 	aRequest.delegate = nil;
+	aRequest.uploadProgressDelegate = nil;
 	[aRequest cancel];
 	[aRequest release];
 }
@@ -85,14 +86,22 @@
 }
 
 
-- (void)_postCompletionNotification {
-	[[NSNotificationCenter defaultCenter] postNotificationName:RMUploadTaskDidCompleteNotificationName object:self];
+#pragma mark ASIHTTPRequestDelegate
+
+- (void)authenticationNeededForRequest:(ASIHTTPRequest *)request {
+	if ([request authenticationRetryCount] == 0) {
+		CloudAppCredentials *credentials = (CloudAppCredentials *)[_destination authentication];
+		[request applyCredentials:[NSDictionary dictionaryWithObjectsAndKeys:credentials.email, kCFHTTPAuthenticationUsername, credentials.password, kCFHTTPAuthenticationPassword, nil]];
+		[request retryUsingSuppliedCredentials];
+	} else {
+		[request cancelAuthentication];
+	}
 }
 
 
-#pragma mark ASIHTTPRequestDelegate
-
 - (void)requestFinished:(ASIHTTPRequest *)request {
+	NSLog(@"[CloudApp.uploader] request finished: %@", request);
+	
 	// Getting upload data finished
 	if (request == _cloudRequest) {
 		if ([_cloudRequest responseStatusCode] != 200) {
@@ -103,12 +112,26 @@
 			[self _failWithError:error];
 		}
 		
+		// S3 Data
 		NSDictionary *s3Info = [[_cloudRequest responseString] JSONValue];
-		NSLog(@"S3 info: %@", s3Info);
+		NSDictionary *params = [s3Info objectForKey:@"params"];
 		
 		// Clean up
 		[self _cancelRequest:_cloudRequest];
 		_cloudRequest = nil;
+		
+		// Start S3 request
+		_s3Request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:[s3Info objectForKey:@"url"]]];
+		_s3Request.delegate = self;
+		_s3Request.uploadProgressDelegate = self;
+		_s3Request.shouldUseRFC2616RedirectBehaviour = YES;
+		for (NSString *param in params) {
+			[_s3Request setPostValue:[params objectForKey:param] forKey:param];
+		}
+		NSString *filePath = [(NSURL *)[_uploadInfo valueForKey:RMUploadFileURLKey] path];
+		[_s3Request addFile:filePath forKey:@"file"];
+		
+		[_s3Request startAsynchronous];
 	}
 	
 	// Upload to S3 finished
@@ -116,15 +139,35 @@
 		// Clean up
 		[self _cancelRequest:_s3Request];
 		_s3Request = nil;
+		
+		NSLog(@"[CloudApp.uploader] Complete: %@", [_s3Request responseHeaders]);
+		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+								  [NSURL URLWithString:@"http://google.com"], RMUploadTaskResourceLocationKey,
+								  nil];
+		[[NSNotificationCenter defaultCenter] postNotificationName:RMUploadTaskDidFinishTransactionNotificationName object:self userInfo:userInfo];
+		[[NSNotificationCenter defaultCenter] postNotificationName:RMUploadTaskDidCompleteNotificationName object:self];
 	}
-	
-	[self _postCompletionNotification];
 }
 
 
 - (void)requestFailed:(ASIHTTPRequest *)request {
+	NSLog(@"[CloudApp.uploader] request failed: %@", [request error]);
 	[self _failWithError:[request error]];
-//	[self _cancelRequest:request];
 }
+
+
+#pragma mark ASIProgressDelegate
+
+// TODO: Fix this. Ugh.
+
+//- (void)setDoubleValue:(double)newProgress {
+//	NSLog(@"[CloudApp.uploader] setting progress: %f", newProgress);
+//	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+//							  [NSNumber numberWithDouble:newProgress], RMUploadTaskProgressCurrentKey,
+//							  [NSNumber numberWithDouble:1.0], RMUploadTaskProgressTotalKey,
+//							  nil];
+//	[[NSNotificationCenter defaultCenter] postNotificationName:RMUploadTaskDidReceiveProgressNotificationName object:self userInfo:userInfo];
+//	NSLog(@"[CloudApp] set progress: %f", newProgress);
+//}
 
 @end

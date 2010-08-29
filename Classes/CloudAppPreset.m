@@ -46,10 +46,7 @@
 
 
 - (NSSet *)acceptedTypes {
-	NSMutableSet *acceptedtypes = [[super acceptedTypes] mutableCopy];
-	[acceptedtypes addObject:(id)kUTTypeJPEG];
-	[acceptedtypes addObject:(id)kUTTypePNG];
-	return acceptedtypes;
+	return [NSSet setWithObject:(id)kUTTypeItem];
 }
 
 @end
